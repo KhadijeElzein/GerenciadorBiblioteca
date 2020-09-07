@@ -6,8 +6,15 @@ import br.unioeste.biblioteca.domain.estruturas.No;
 import br.unioeste.biblioteca.domain.estruturas.NoDuplamenteEncadeado;
 import br.unioeste.biblioteca.service.interfaces.BibliotecaService;
 
-public class Biblioteca implements BibliotecaService{
+import java.io.Serializable;
+
+public class Biblioteca implements BibliotecaService, Serializable {
+
+	private static final long serialVersionUID = 7030740307833658544L;
+
 	private ListaDuplamenteEncadeada<Estante> estantes;
+
+	private Fila<Aluno> filaEspera = new Fila<Aluno>();
 
 	public ListaDuplamenteEncadeada<Estante> getEstantes() {
 		return estantes;
@@ -15,6 +22,10 @@ public class Biblioteca implements BibliotecaService{
 
 	public void setEstantes(ListaDuplamenteEncadeada<Estante> estantes) {
 		this.estantes = estantes;
+	}
+
+	public Fila<Aluno> getFilaAlunos() {
+		return this.filaEspera;
 	}
 
 	private ListaDuplamenteEncadeada<Estante> inserirEstante(ListaDuplamenteEncadeada<Estante> estantes, Long codigo) {
@@ -194,7 +205,7 @@ public class Biblioteca implements BibliotecaService{
 	}
 	
 	@Override
-	public void imprimirFilaEsperaSala(Fila<Aluno> filaEspera) {
+	public void imprimirFilaEsperaSala() {
 	
 		No<Aluno> aux = filaEspera.getInicio();
 		System.out.println("----- FILA DE ESPERA DAS SALAS DE ESTUDOS -----");
@@ -202,5 +213,50 @@ public class Biblioteca implements BibliotecaService{
 			System.out.println("RA DO ALUNO = " + aux.getInfo().getRa());
 			aux = aux.getProx();
 		}
+	}
+
+	@Override
+	public ListaDuplamenteEncadeada<SalaEstudos> locarSala(ListaDuplamenteEncadeada<SalaEstudos> salasEstudos, Long ra) {
+		Aluno aluno = new Aluno();
+		aluno.setRa(ra);
+		if (salasEstudos != null && !salasEstudos.vazia(salasEstudos)) {
+			boolean encontrouSalaLivre = false;
+			NoDuplamenteEncadeado<SalaEstudos> aux = salasEstudos.getPrimeiro();
+			while (aux != null) {
+				if (aux.getInfo().estaDisponivel()) {
+					aux.getInfo().setAluno(aluno);
+					encontrouSalaLivre = true;
+					break;
+				}
+				aux = aux.getProx();
+			}
+			if (!encontrouSalaLivre) {
+				filaEspera.queue(filaEspera, aluno);
+			}
+		}
+		return salasEstudos;
+	}
+
+	@Override
+	public ListaDuplamenteEncadeada<SalaEstudos> liberarSala(ListaDuplamenteEncadeada<SalaEstudos> salasEstudos, Long ra) {
+		Aluno aluno = new Aluno();
+		aluno.setRa(ra);
+		if (salasEstudos != null && !salasEstudos.vazia(salasEstudos)) {
+			NoDuplamenteEncadeado<SalaEstudos> aux = salasEstudos.getPrimeiro();
+			while (aux != null) {
+				// Encontrou a sala, deixa-a disponivel e loca para algum aluno na fila de espera
+				if (!aux.getInfo().estaDisponivel() && aux.getInfo().getAluno().getRa().equals(ra)) {
+					aux.getInfo().setAluno(null);
+					aux.getInfo().setLivros(null);
+					if (!filaEspera.isVazia(filaEspera)) {
+						Aluno alunoDaFila = filaEspera.dequeue(filaEspera);
+						this.locarSala(salasEstudos, alunoDaFila.getRa());
+					}
+					break;
+				}
+				aux = aux.getProx();
+			}
+		}
+		return salasEstudos;
 	}
 }

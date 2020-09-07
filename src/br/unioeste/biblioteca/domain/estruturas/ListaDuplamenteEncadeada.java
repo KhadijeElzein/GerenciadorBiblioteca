@@ -1,7 +1,11 @@
 package br.unioeste.biblioteca.domain.estruturas;
 
-public class ListaDuplamenteEncadeada<T extends Comparable<T>>{
-	
+import java.io.Serializable;
+
+public class ListaDuplamenteEncadeada<T extends Comparable<T>> implements Serializable {
+
+	private static final long serialVersionUID = 7146424347680198315L;
+
 	private NoDuplamenteEncadeado<T> primeiro;
 	
 	private NoDuplamenteEncadeado<T> ultimo;

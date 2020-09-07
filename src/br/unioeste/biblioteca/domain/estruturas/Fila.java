@@ -1,6 +1,11 @@
 package br.unioeste.biblioteca.domain.estruturas;
 
-public class Fila<T> {
+import java.io.Serializable;
+
+public class Fila<T> implements Serializable {
+
+	private static final long serialVersionUID = -7113297297536470863L;
+
 	private No<T> inicio;
 	private No<T> fim;
 	

@@ -1,6 +1,11 @@
 package br.unioeste.biblioteca.domain.estruturas;
 
-public class No<T> {
+import java.io.Serializable;
+
+public class No<T> implements Serializable {
+
+	private static final long serialVersionUID = 3580187887873837065L;
+
 	private T info;
 	private No<T> prox;
 	

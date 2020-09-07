@@ -1,6 +1,10 @@
 package br.unioeste.biblioteca.domain.estruturas;
 
-public class Pilha<T extends Comparable<T>> {
+import java.io.Serializable;
+
+public class Pilha<T extends Comparable<T>> implements Serializable {
+
+	private static final long serialVersionUID = 1678644387288474720L;
 
 	private No<T> topo;
 

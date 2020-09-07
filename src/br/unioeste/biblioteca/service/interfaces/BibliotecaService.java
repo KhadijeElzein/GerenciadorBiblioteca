@@ -2,6 +2,7 @@ package br.unioeste.biblioteca.service.interfaces;
 
 import br.unioeste.biblioteca.domain.Aluno;
 import br.unioeste.biblioteca.domain.Estante;
+import br.unioeste.biblioteca.domain.SalaEstudos;
 import br.unioeste.biblioteca.domain.estruturas.Fila;
 import br.unioeste.biblioteca.domain.estruturas.ListaDuplamenteEncadeada;
 
@@ -16,5 +17,9 @@ public interface BibliotecaService {
 	
 	public void imprimirMapaEstantes(ListaDuplamenteEncadeada<Estante> estantes);
 	
-	public void imprimirFilaEsperaSala(Fila<Aluno> filaEspera);
+	public void imprimirFilaEsperaSala();
+
+	public ListaDuplamenteEncadeada<SalaEstudos> locarSala(ListaDuplamenteEncadeada<SalaEstudos> salasEstudos, Long ra);
+
+	public ListaDuplamenteEncadeada<SalaEstudos> liberarSala(ListaDuplamenteEncadeada<SalaEstudos> salasEstudos, Long ra);
 }

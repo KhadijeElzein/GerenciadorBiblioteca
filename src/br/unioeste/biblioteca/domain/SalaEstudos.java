@@ -2,9 +2,24 @@ package br.unioeste.biblioteca.domain;
 
 import br.unioeste.biblioteca.domain.estruturas.Pilha;
 
-public class SalaEstudos {
+import java.io.Serializable;
+
+public class SalaEstudos implements Serializable, Comparable<SalaEstudos> {
+
+	private static final long serialVersionUID = -225355477100862863L;
+
+	private Long codigo;
 	private Aluno aluno;
 	private Pilha<Livro> livros;
+
+	public SalaEstudos() { super(); }
+
+	public SalaEstudos(Long codigo) {
+		super();
+		this.codigo = codigo;
+	}
+
+	public Long getCodigo() { return this.codigo; }
 	
 	public Aluno getAluno() {
 		return aluno;
@@ -18,5 +33,14 @@ public class SalaEstudos {
 	}
 	public void setLivros(Pilha<Livro> livros) {
 		this.livros = livros;
+	}
+
+	public Boolean estaDisponivel() {
+		return this.aluno == null;
+	}
+
+	@Override
+	public int compareTo(SalaEstudos o) {
+		return Long.compare(this.codigo, o.codigo);
 	}
 }

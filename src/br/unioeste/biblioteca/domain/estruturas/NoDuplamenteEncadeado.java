@@ -1,6 +1,11 @@
 package br.unioeste.biblioteca.domain.estruturas;
 
-public class NoDuplamenteEncadeado<T> {
+import java.io.Serializable;
+
+public class NoDuplamenteEncadeado<T> implements Serializable {
+
+	private static final long serialVersionUID = 4992247612530139355L;
+
 	private T info;
 	private NoDuplamenteEncadeado<T> anterior;
 	private NoDuplamenteEncadeado<T> prox;

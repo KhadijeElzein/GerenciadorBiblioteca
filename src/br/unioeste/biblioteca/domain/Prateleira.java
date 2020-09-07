@@ -2,7 +2,12 @@ package br.unioeste.biblioteca.domain;
 
 import br.unioeste.biblioteca.domain.estruturas.ListaDuplamenteEncadeada;
 
-public class Prateleira implements Comparable<Prateleira> {
+import java.io.Serializable;
+
+public class Prateleira implements Serializable, Comparable<Prateleira> {
+
+	private static final long serialVersionUID = 6459924902883966181L;
+
 	private Long codigo;
 	private ListaDuplamenteEncadeada<Livro> livros;
 

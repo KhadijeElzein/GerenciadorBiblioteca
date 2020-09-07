@@ -1,7 +1,12 @@
 package br.unioeste.biblioteca.domain;
 
-public class Livro implements Comparable<Livro>{
-	private Long codigo;						
+import java.io.Serializable;
+
+public class Livro implements Serializable, Comparable<Livro>{
+
+	private static final long serialVersionUID = 952768404947043264L;
+
+	private Long codigo;
 	private String titulo;
 	private String autor; 
 	private Long codEstante;
