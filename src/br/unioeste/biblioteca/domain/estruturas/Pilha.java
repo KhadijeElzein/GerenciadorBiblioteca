@@ -17,17 +17,17 @@ public class Pilha<T extends Comparable<T>> {
 		this.topo = topo;
 	}
 
-	Boolean isVazia(Pilha<T> p) {
+	public Boolean isVazia(Pilha<T> p) {
 		return (p.getTopo() == null);
 	}
 
-	T topo(Pilha<T> p) {
+	public T topo(Pilha<T> p) {
 		if (!isVazia(p))
 			return p.getTopo().getInfo();
 		return null;
 	}
 
-	T pop(Pilha<T> p) {
+	public T pop(Pilha<T> p) {
 		if (!isVazia(p)) {
 			T x = topo(p);
 			p.setTopo(p.getTopo().getProx());
@@ -38,14 +38,14 @@ public class Pilha<T extends Comparable<T>> {
 		}
 	}
 
-	Pilha<T> push(Pilha<T> p, T item) {
+	public Pilha<T> push(Pilha<T> p, T item) {
 		No<T> aux = new No<T>(item);
 		aux.setProx(p.getTopo());
 		p.setTopo(aux);
 		return p;
 	}
 
-	void imprime(Pilha<T> p) {
+	public void imprime(Pilha<T> p) {
 		if (isVazia(p))
 			System.out.println("Pilha vazia");
 		else {
@@ -59,11 +59,11 @@ public class Pilha<T extends Comparable<T>> {
 		}
 	}
 
-	Pilha<T> FPVazia (Pilha<T> p){
+	public Pilha<T> FPVazia (Pilha<T> p){
 	    p.setTopo(null);
 	    return p;
 	}
-	Integer getTamanho (Pilha<T> p){
+	public Integer getTamanho (Pilha<T> p){
 	    if (isVazia(p))
 	    	return 0;
 	    else{

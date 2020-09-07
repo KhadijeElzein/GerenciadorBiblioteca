@@ -6,6 +6,19 @@ public class Prateleira implements Comparable<Prateleira> {
 	private Long codigo;
 	private ListaDuplamenteEncadeada<Livro> livros;
 
+	
+	public Prateleira(Long codigo, ListaDuplamenteEncadeada<Livro> livros) {
+		super();
+		this.codigo = codigo;
+		this.livros = livros;
+	}
+	
+	
+	public Prateleira() {
+		super();
+	}
+
+
 	public Long getCodigo() {
 		return codigo;
 	}
@@ -21,5 +34,6 @@ public class Prateleira implements Comparable<Prateleira> {
 	@Override
 	public int compareTo(Prateleira o) {
 		return Long.compare(this.codigo,o.codigo);
-	}	
+	}
+
 }

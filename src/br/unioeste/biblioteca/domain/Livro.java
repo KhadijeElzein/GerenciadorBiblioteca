@@ -6,6 +6,25 @@ public class Livro implements Comparable<Livro>{
 	private String autor; 
 	private Long codEstante;
 	private Long codPrateleira;
+	private Boolean isEmprestado;
+
+	
+	
+	public Livro() {
+		super();
+	}
+
+	public Livro(Long codigo, String titulo, String autor, Long codEstante, Long codPrateleira, 
+			Boolean isEmprestado) {
+		super();
+		this.codigo = codigo;
+		this.titulo = titulo;
+		this.autor = autor;
+		this.codEstante = codEstante;
+		this.codPrateleira = codPrateleira;
+		this.isEmprestado = isEmprestado;
+	}
+	
 	public Long getCodigo() {
 		return codigo;
 	}
@@ -36,12 +55,20 @@ public class Livro implements Comparable<Livro>{
 	public void setCodPrateleira(Long codPrateleira) {
 		this.codPrateleira = codPrateleira;
 	}
+	
+	
+	public Boolean getIsEmprestado() {
+		return isEmprestado;
+	}
+
+	public void setIsEmprestado(Boolean isEmprestado) {
+		this.isEmprestado = isEmprestado;
+	}
+
 	@Override
 	public int compareTo(Livro o) {
 		// TODO Auto-generated method stub
 		return Long.compare(this.codigo,o.codigo);
 	}
-	
-	
 	
 }

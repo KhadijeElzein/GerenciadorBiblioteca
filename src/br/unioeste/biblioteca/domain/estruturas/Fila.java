@@ -23,11 +23,11 @@ public class Fila<T> {
 		this.fim = null;
 	}
 	
-	Boolean isVazia(Fila<T> f){
+	public Boolean isVazia(Fila<T> f){
 	    return (f.getInicio() == null);
 	}
 
-	Fila<T> queue(Fila<T> f, T x){
+	public Fila<T> queue(Fila<T> f, T x){
 	    No<T> aux = new No<T>(x);
 	    aux.setProx(null);
 	    if (isVazia(f))
@@ -38,7 +38,7 @@ public class Fila<T> {
 	    return f;
 	}
 
-	T dequeue (Fila<T> f){
+	public T dequeue (Fila<T> f){
 	   T item = f.getInicio().getInfo();
 
 	    if (f.getInicio() == f.getFim())
@@ -47,7 +47,7 @@ public class Fila<T> {
 	    return item;
 	}
 	
-	void imprime(Fila<T> f){
+	public void imprime(Fila<T> f){
 	    if(isVazia(f))
 	        System.out.println("Fila vazia");
 	    else{
@@ -61,7 +61,7 @@ public class Fila<T> {
 	    }
 	}
 
-	Fila<T> FFVazia (Fila<T> f){
+	public Fila<T> FFVazia (Fila<T> f){
 	    f.setInicio(null); 
 	    f.setFim(null);
 	    return f;
