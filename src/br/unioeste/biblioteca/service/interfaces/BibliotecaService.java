@@ -17,9 +17,13 @@ public interface BibliotecaService {
 	
 	public void imprimirMapaEstantes(ListaDuplamenteEncadeada<Estante> estantes);
 	
-	public void imprimirFilaEsperaSala();
+	public void imprimirFilaEsperaSala(Fila<Aluno> filaEspera);
 
 	public ListaDuplamenteEncadeada<SalaEstudos> locarSala(ListaDuplamenteEncadeada<SalaEstudos> salasEstudos, Long ra);
 
 	public ListaDuplamenteEncadeada<SalaEstudos> liberarSala(ListaDuplamenteEncadeada<SalaEstudos> salasEstudos, Long ra);
+
+	public void imprimirSalas(ListaDuplamenteEncadeada<SalaEstudos> salas);
+
+	public void emprestarLivro(ListaDuplamenteEncadeada<SalaEstudos> salas, Long ra, Long codigoLivro);
 }

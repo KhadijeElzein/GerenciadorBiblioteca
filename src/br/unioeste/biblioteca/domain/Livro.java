@@ -11,7 +11,7 @@ public class Livro implements Serializable, Comparable<Livro>{
 	private String autor; 
 	private Long codEstante;
 	private Long codPrateleira;
-	private Boolean isEmprestado;
+	private Boolean isEmprestado = false;
 
 	
 	

@@ -10,7 +10,7 @@ public class SalaEstudos implements Serializable, Comparable<SalaEstudos> {
 
 	private Long codigo;
 	private Aluno aluno;
-	private Pilha<Livro> livros;
+	private Pilha<Livro> livros = new Pilha<>();
 
 	public SalaEstudos() { super(); }
 

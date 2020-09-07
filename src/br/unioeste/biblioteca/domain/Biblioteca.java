@@ -1,9 +1,6 @@
 package br.unioeste.biblioteca.domain;
 
-import br.unioeste.biblioteca.domain.estruturas.Fila;
-import br.unioeste.biblioteca.domain.estruturas.ListaDuplamenteEncadeada;
-import br.unioeste.biblioteca.domain.estruturas.No;
-import br.unioeste.biblioteca.domain.estruturas.NoDuplamenteEncadeado;
+import br.unioeste.biblioteca.domain.estruturas.*;
 import br.unioeste.biblioteca.service.interfaces.BibliotecaService;
 
 import java.io.Serializable;
@@ -14,7 +11,9 @@ public class Biblioteca implements BibliotecaService, Serializable {
 
 	private ListaDuplamenteEncadeada<Estante> estantes;
 
-	private Fila<Aluno> filaEspera = new Fila<Aluno>();
+	private Fila<Aluno> filaEspera = new Fila<>();
+
+	ListaDuplamenteEncadeada<SalaEstudos> salasEstudos;
 
 	public ListaDuplamenteEncadeada<Estante> getEstantes() {
 		return estantes;
@@ -24,8 +23,16 @@ public class Biblioteca implements BibliotecaService, Serializable {
 		this.estantes = estantes;
 	}
 
-	public Fila<Aluno> getFilaAlunos() {
+	public Fila<Aluno> getFilaEspera() {
 		return this.filaEspera;
+	}
+
+	public ListaDuplamenteEncadeada<SalaEstudos> getSalasEstudos() {
+		return salasEstudos;
+	}
+
+	public void setSalasEstudos(ListaDuplamenteEncadeada<SalaEstudos> salasEstudos) {
+		this.salasEstudos = salasEstudos;
 	}
 
 	private ListaDuplamenteEncadeada<Estante> inserirEstante(ListaDuplamenteEncadeada<Estante> estantes, Long codigo) {
@@ -137,33 +144,21 @@ public class Biblioteca implements BibliotecaService, Serializable {
 
 	@Override
 	public void buscaEnderecoLivro(ListaDuplamenteEncadeada<Estante> estantes, Long codLivro){
+	    if (estantes != null && !estantes.vazia(estantes)) {
+	    	Livro livro = buscarLivro(estantes, codLivro);
 
-	    if (estantes!=null && !estantes.vazia(estantes)) {
-			NoDuplamenteEncadeado<Estante> auxEstante = estantes.getPrimeiro();
-			ListaDuplamenteEncadeada<Prateleira> prateleiras = auxEstante.getInfo().getPrateleiras();
-			if (prateleiras!=null && !prateleiras.vazia(prateleiras)) {
-				NoDuplamenteEncadeado<Prateleira> auxPrateleira = prateleiras.getPrimeiro();
-	            while (auxPrateleira != null) {
-					ListaDuplamenteEncadeada<Livro> livros = auxPrateleira.getInfo().getLivros();
-					if (livros!=null && !livros.vazia(livros)) {
-						NoDuplamenteEncadeado<Livro> auxLivro = livros.getPrimeiro();
-						while (auxLivro != null && !auxLivro.getInfo().getCodigo().equals(codLivro))
-							auxLivro = auxLivro.getProx();
-						if (auxLivro != null) {
-							if(auxLivro.getInfo().getIsEmprestado().equals(false))
-								System.out.println("Este livro encontra-se na Estante " + 
-							   auxLivro.getInfo().getCodEstante()  + ", Prateleira " +  
-							   auxLivro.getInfo().getCodPrateleira());
-							else System.out.println("Livro indisponível (emprestado)");
-	                    }
-	
-	               }
-					auxPrateleira = auxPrateleira.getProx();
-	           }
-	       }
-		   auxEstante = auxEstante.getProx();
-	   }
-	   System.out.println("Livro indisponível (não cadastrado na biblioteca)");
+	    	if (livro == null) {
+				System.out.println("Livro indisponível (não cadastrado na biblioteca)");
+			} else if (livro.getIsEmprestado()) {
+				System.out.println("Livro indisponível (emprestado)");
+			} else {
+				System.out.println("Este livro encontra-se na Estante " +
+						livro.getCodEstante()  + ", Prateleira " +
+						livro.getCodPrateleira());
+			}
+	   } else {
+			System.out.println("Livro indisponível (não cadastrado na biblioteca)");
+		}
 	}
 	
 	@Override
@@ -189,7 +184,7 @@ public class Biblioteca implements BibliotecaService, Serializable {
 						ListaDuplamenteEncadeada<Livro> livros = auxPrateleira.getInfo().getLivros();
 						if (livros!= null && !livros.vazia(livros)) {
 							NoDuplamenteEncadeado<Livro> auxLivro = livros.getPrimeiro();
-							while (auxLivro != null) {
+							while (auxLivro != null && !auxLivro.getInfo().getIsEmprestado()) {
 								System.out.println(
 										"|  " + auxLivro.getInfo().getCodigo() + ", " + auxLivro.getInfo().getAutor()
 												+ ", " + auxLivro.getInfo().getTitulo() + "    |");
@@ -205,8 +200,7 @@ public class Biblioteca implements BibliotecaService, Serializable {
 	}
 	
 	@Override
-	public void imprimirFilaEsperaSala() {
-	
+	public void imprimirFilaEsperaSala(Fila<Aluno> filaEspera) {
 		No<Aluno> aux = filaEspera.getInicio();
 		System.out.println("----- FILA DE ESPERA DAS SALAS DE ESTUDOS -----");
 		while (aux != null) {
@@ -246,8 +240,18 @@ public class Biblioteca implements BibliotecaService, Serializable {
 			while (aux != null) {
 				// Encontrou a sala, deixa-a disponivel e loca para algum aluno na fila de espera
 				if (!aux.getInfo().estaDisponivel() && aux.getInfo().getAluno().getRa().equals(ra)) {
+					// Remove o aluno
 					aux.getInfo().setAluno(null);
-					aux.getInfo().setLivros(null);
+					// Devolve os livros
+					if (aux.getInfo().getLivros() != null && !aux.getInfo().getLivros().isVazia(aux.getInfo().getLivros())) {
+						Livro livro = aux.getInfo().getLivros().pop(aux.getInfo().getLivros());
+						while (livro != null) {
+							livro.setIsEmprestado(false);
+							livro = aux.getInfo().getLivros().pop(aux.getInfo().getLivros());
+						}
+						System.out.println("Sala " + aux.getInfo().getCodigo() + " liberada.");
+					}
+					// Chama o aluno na fila de espera
 					if (!filaEspera.isVazia(filaEspera)) {
 						Aluno alunoDaFila = filaEspera.dequeue(filaEspera);
 						this.locarSala(salasEstudos, alunoDaFila.getRa());
@@ -258,5 +262,90 @@ public class Biblioteca implements BibliotecaService, Serializable {
 			}
 		}
 		return salasEstudos;
+	}
+
+	@Override
+	public void imprimirSalas(ListaDuplamenteEncadeada<SalaEstudos> salas) {
+		if (salas != null && !salas.vazia(salas)) {
+			NoDuplamenteEncadeado<SalaEstudos> auxSala = salas.getPrimeiro();
+			while (auxSala != null) {
+				System.out.println("==============================================================================");
+				System.out.println(
+						"|                                 Sala " + auxSala.getInfo().getCodigo() + "         |");
+				if (auxSala.getInfo().estaDisponivel()) {
+					System.out.println("|                                 Vazia         |");
+				} else {
+					System.out.println("|                                 RA: " + auxSala.getInfo().getAluno().getRa() + "         |");
+					Pilha livros = auxSala.getInfo().getLivros();
+					if (livros != null && !livros.isVazia(livros)) {
+						No<Livro> auxLivro = livros.getTopo();
+						while (auxLivro != null) {
+							System.out.println(
+									"|  " + auxLivro.getInfo().getCodigo() + ", " + auxLivro.getInfo().getAutor()
+											+ ", " + auxLivro.getInfo().getTitulo() + "    |");
+							auxLivro = auxLivro.getProx();
+						}
+					}
+				}
+				auxSala = auxSala.getProx();
+			}
+		}
+	}
+
+	@Override
+	public void emprestarLivro(ListaDuplamenteEncadeada<SalaEstudos> salas, Long ra, Long codigoLivro) {
+		if (salas != null && !salas.vazia(salas)) {
+			NoDuplamenteEncadeado<SalaEstudos> auxSala = salas.getPrimeiro();
+			SalaEstudos salaEncontrada = null;
+			while (auxSala != null) {
+				if (!auxSala.getInfo().estaDisponivel() && auxSala.getInfo().getAluno().getRa().equals(ra)) {
+					salaEncontrada = auxSala.getInfo();
+					break;
+				}
+				auxSala = auxSala.getProx();
+			}
+			if (salaEncontrada == null) {
+				System.out.println("Sala não encontrada para o RA: " + ra);
+			} else {
+				Livro livro = buscarLivro(getEstantes(), codigoLivro);
+				if (livro == null) {
+					System.out.println("Livro indisponível (não cadastrado na biblioteca)");
+				} else if (livro.getIsEmprestado()) {
+					System.out.println("Livro indisponível (emprestado)");
+				} else {
+					System.out.println("Livro emprestado com sucesso!");
+					livro.setIsEmprestado(true);
+					salaEncontrada.getLivros().push(salaEncontrada.getLivros(), livro);
+				}
+			}
+		}
+	}
+
+	private Livro buscarLivro(ListaDuplamenteEncadeada<Estante> estantes, Long codLivro) {
+		if (estantes != null && !estantes.vazia(estantes)) {
+			NoDuplamenteEncadeado<Estante> auxEstante = estantes.getPrimeiro();
+			while (auxEstante != null) {
+				ListaDuplamenteEncadeada<Prateleira> prateleiras = auxEstante.getInfo().getPrateleiras();
+				if (prateleiras != null && !prateleiras.vazia(prateleiras)) {
+					NoDuplamenteEncadeado<Prateleira> auxPrateleira = prateleiras.getPrimeiro();
+					while (auxPrateleira != null) {
+						ListaDuplamenteEncadeada<Livro> livros = auxPrateleira.getInfo().getLivros();
+						if (livros != null && !livros.vazia(livros)) {
+							NoDuplamenteEncadeado<Livro> auxLivro = livros.getPrimeiro();
+							while (auxLivro != null && !auxLivro.getInfo().getCodigo().equals(codLivro)) {
+								auxLivro = auxLivro.getProx();
+							}
+							if (auxLivro != null) {
+								return auxLivro.getInfo();
+							}
+
+						}
+						auxPrateleira = auxPrateleira.getProx();
+					}
+				}
+				auxEstante = auxEstante.getProx();
+			}
+		}
+		return null;
 	}
 }

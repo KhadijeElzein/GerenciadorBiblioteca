@@ -20,6 +20,7 @@ public class Main {
         if (biblioteca == null) {
             biblioteca = new Biblioteca();
             biblioteca.setEstantes(arquivo.lerArquivo());
+            biblioteca.setSalasEstudos(gerarSalas());
         }
         biblioteca.getEstantes().imprime(biblioteca.getEstantes());
         
@@ -31,19 +32,36 @@ public class Main {
         biblioteca.imprimirMapaEstantes(biblioteca.getEstantes());
 
         // Gera as salas
-        ListaDuplamenteEncadeada<SalaEstudos> salas = gerarSalas();
+        biblioteca.imprimirSalas(biblioteca.getSalasEstudos());
         // Loca as 3 salas
-        salas = biblioteca.locarSala(salas, 22L);
-        salas = biblioteca.locarSala(salas, 30L);
-        salas = biblioteca.locarSala(salas, 40L);
+        biblioteca.locarSala(biblioteca.getSalasEstudos(), 22L);
+        biblioteca.locarSala(biblioteca.getSalasEstudos(), 30L);
+        biblioteca.locarSala(biblioteca.getSalasEstudos(), 40L);
+        biblioteca.imprimirSalas(biblioteca.getSalasEstudos());
         // Tenta locar mais uma sala, adiciona na fila de espera
-        salas = biblioteca.locarSala(salas, 50L);
+        biblioteca.locarSala(biblioteca.getSalasEstudos(), 50L);
         // Imprime os registros
-        biblioteca.imprimirFilaEsperaSala();
+        biblioteca.imprimirFilaEsperaSala(biblioteca.getFilaEspera());
+
+        // Tenta alugar um livro para um RA que não existe
+        biblioteca.emprestarLivro(biblioteca.getSalasEstudos(), 56L, 1L);
+        // Tenta alugar um livro que não existe
+        biblioteca.emprestarLivro(biblioteca.getSalasEstudos(), 40L, 1000L);
+        // Aluga um livro existente
+        biblioteca.emprestarLivro(biblioteca.getSalasEstudos(), 40L, 80L);
+        // Aluga um livro já alugado
+        biblioteca.emprestarLivro(biblioteca.getSalasEstudos(), 40L, 80L);
+        biblioteca.imprimirSalas(biblioteca.getSalasEstudos());
+
         // Libera sala
-        salas = biblioteca.liberarSala(salas, 22L);
+        biblioteca.liberarSala(biblioteca.getSalasEstudos(), 22L);
+        // Aluga um livro para essa sala
+        biblioteca.emprestarLivro(biblioteca.getSalasEstudos(), 50L, 80L);
+        biblioteca.imprimirSalas(biblioteca.getSalasEstudos());
+
         // Imprime os registros
-        biblioteca.imprimirFilaEsperaSala();
+        biblioteca.imprimirFilaEsperaSala(biblioteca.getFilaEspera());
+        biblioteca.imprimirSalas(biblioteca.getSalasEstudos());
         // Armazena os dados
         storage.armazenarDados(biblioteca);
         //Fila<Aluno> alunos = new Fila<Aluno>();
