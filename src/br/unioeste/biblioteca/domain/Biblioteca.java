@@ -273,7 +273,7 @@ public class Biblioteca implements BibliotecaService, Serializable {
 				System.out.println(
 						"|                                 Sala " + auxSala.getInfo().getCodigo() + "         |");
 				if (auxSala.getInfo().estaDisponivel()) {
-					System.out.println("|                                 Vazia         |");
+					System.out.println("|                                 Vazia          |");
 				} else {
 					System.out.println("|                                 RA: " + auxSala.getInfo().getAluno().getRa() + "         |");
 					Pilha livros = auxSala.getInfo().getLivros();

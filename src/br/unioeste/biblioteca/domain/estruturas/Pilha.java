@@ -37,7 +37,6 @@ public class Pilha<T extends Comparable<T>> implements Serializable {
 			p.setTopo(p.getTopo().getProx());
 			return x;
 		} else {
-			System.out.println("Pilha vazia!");
 			return null;
 		}
 	}

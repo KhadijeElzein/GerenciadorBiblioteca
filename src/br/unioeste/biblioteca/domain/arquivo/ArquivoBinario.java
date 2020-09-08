@@ -32,8 +32,6 @@ public class ArquivoBinario {
             objectInputStream.close();
             return biblioteca;
         } catch (Exception e) {
-            System.out.println("Erro ao ler arquivo de armazenamento.");
-            e.printStackTrace();
             return null;
         }
     }
