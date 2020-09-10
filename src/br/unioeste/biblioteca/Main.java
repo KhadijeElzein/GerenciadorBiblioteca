@@ -30,7 +30,7 @@ public class Main {
             System.out.println("------------------- MENU BIBLIOTECA -------------------");
             System.out.println("|                                                      |");
             System.out.println("| [0] -> Sair                                          |");
-            System.out.println("| [1] -> Carregar Arquivo                              |");
+            System.out.println("| [1] -> Carregar Arquivo Texto                        |");
             System.out.println("| [2] -> Inserir Livro                                 |");
             System.out.println("| [3] -> Retirar Livro                                 |");
             System.out.println("| [4] -> Buscar Livro                                  |");
@@ -46,12 +46,19 @@ public class Main {
 
             option = scanIn.nextLine();
 
+            // Se por algum motivo não carregou nenhum dado e a opção não for a de carregar arquivo...
+            if (biblioteca == null && !"1".equals(option)) {
+                System.out.println("Nenhum dado carregado...");
+                continue;
+            }
+
             if ("0".equals(option)) {
                 break;
             } else if ("1".equals(option)) {
                 biblioteca = new Biblioteca();
                 biblioteca.setEstantes(arquivo.lerArquivo());
                 biblioteca.setSalasEstudos(gerarSalas());
+                System.out.println("Arquivo texto carregado...");
             } else if ("2".equals(option)) {
                 System.out.println("------------------- INSERIR LIVRO----------------------");
                 System.out.println("| Informe o codigo do livro...                         |");
