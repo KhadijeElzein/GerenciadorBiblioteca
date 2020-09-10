@@ -1,20 +1,20 @@
 E0
 P0
-10, Mem√≥rias P√≥stumas de Br√°s Cubas, Machado de Assis
-13, O Discurso do M√©todo, Ren√© Descartes
+10, MemÛrias PÛstumas de Br·s Cubas, Machado de Assis
+13, O Discurso do MÈtodo, RenÈ Descartes
 P1
 5, Assim falava Zaratrustura, Friedrich Nietzche
 7, O Hobbit, J. R. R. Tolkien
 8, Ulisses, James Joyce
 P2
-25, Os Elefantes n√£o esquecem, Agatha Christie
-44, Os Miser√°veis, Victor Hugo
-70, A Prima Bette, Honor√© de Balzac
+25, Os Elefantes n„o esquecem, Agatha Christie
+44, Os Miser·veis, Victor Hugo
+70, A Prima Bette, HonorÈ de Balzac
 E1
 P0
-2, A Divina Com√©dia, Dante Alighieri
+2, A Divina ComÈdia, Dante Alighieri
 3, Frankenstein, Mary Shelley
-4, A Insustent√°vel Leveza do Ser, Milan Kundera
+4, A Insustent·vel Leveza do Ser, Milan Kundera
 P1
 P2
 30, Algoritmos em linguagem C, Paulo Feofiloff
@@ -23,18 +23,18 @@ P3
 E2
 P0
 P1
-100, A Rep√∫blica, Plat√£o
-120, Intelig√™ncia Artificial, Russell e Norvig
-130, Primeiras Est√≥rias, Jo√£o Guimar√£es Rosa
+100, A Rep˙blica, Plat„o
+120, InteligÍncia Artificial, Russell e Norvig
+130, Primeiras EstÛrias, Jo„o Guimar„es Rosa
 P2
 P3
 P4
 80, A Hora da Estrela, Clarice Lispector
-83, Romanceiro da Inconfid√™ncia, Cec√≠lia Meireles
-84, O Corti√ßo, Alu√≠sio de Azevedo
+83, Romanceiro da InconfidÍncia, CecÌ≠lia Meireles
+84, O CortiÁo, AluÌsio de Azevedo
 E3
 P0
-200, O Tempo e o Vento, √ârico Ver√≠ssimo
+200, O Tempo e o Vento, …rico VerÌ≠ssimo
 P1
 700, O Quinze, Raquel de Queiroz
 710, Feliz Ano Velho, Marcelo Rubens Paiva
